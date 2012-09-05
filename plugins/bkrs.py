@@ -20,22 +20,14 @@ def word_search(word):
         num = 1
         translate += '[=== %s: %s ===]\n\n' % (word, WORD_NOT_FOUND)
         while True:
-            #chinese = doc.xpath('//div[@id="ajax_search"]/div[@class="margin_left"]/table/tr[@class="vtop"]/td[%s]/div[@class="ch2"]/a[@class="black"]/text()' % (num))
-            #pinyin = doc.xpath('//div[@id="ajax_search"]/div[@class="margin_left"]/table/tr[@class="vtop"]/td[%s]/div[@class="py2"]/text()' % (num))
-            #russian = doc.xpath('//div[@id="ajax_search"]/div[@class="margin_left"]/table/tr[@class="vtop"]/td[%s]/div[@class="ru"]/div' % (num))
             chinese = doc.xpath('//td[%s]/div[@class="ch2"]/a[@class="black"]/text()' % (num))
             pinyin = doc.xpath('//td[%s]/div[@class="py2"]/text()' % (num))
             russian = doc.xpath('//td[%s]/div[@class="ru"]/div' % (num))
-            #examples = doc.xpath('//div[@id="ajax_search"]/div[@class="margin_left"]/table/tr[@class="vtop"]/td[%s]/div[@class="ru"]/div[@class="m2"]/div[@class="ex"]/text()' % (num))
             for ch in chinese:
                 for py in pinyin:
                     translate += '-- %s %s --\n' % (ch, py)
                     for ru in russian:
                         translate += '%s\n' % (ru.text_content())
-                    #if examples:
-                    #    translate += '\nExamples:\n'
-                    #    for ex in examples:
-                    #        translate += '%s\n' % (ex)
             num += 1
             if not russian:
                 break
@@ -45,7 +37,6 @@ def word_search(word):
         pinyin = doc.xpath('//div[@class="py"]/text()')
         rus_single = doc.xpath('//div[@class="ru"]') # checking whether searched word has many meanings or not. If it is, we show rus_full, if it's not, we show rus_single
         rus_full = doc.xpath('//div[@class="ru"]/*[not(@class="ex")]')
-        #examples = doc.xpath('//div[@class="ru"]/div[@class="m2"]/div[@class="ex"]')
 
         translate += u'%s: %s\n' % (word, pinyin[0].strip())
 
@@ -54,8 +45,4 @@ def word_search(word):
         else:
             for ru in rus_full:
                 translate += '%s\n' % (ru.text_content())
-            #if examples:
-            #    translate += '\nExamples:\n'
-            #    for ex in examples:
-            #        translate += '%s\n' % (ex.text_content())
     print translate.encode('utf-8')
